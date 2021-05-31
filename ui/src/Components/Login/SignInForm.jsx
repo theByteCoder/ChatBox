@@ -15,10 +15,10 @@ const SignInForm = () => {
       .then((res) => {
         const sessionToken = res.sessionToken;
         setSessionToken(sessionToken);
-        // sessionToken is a one-use token, so make sure this is only called once
+        // sessionToken is a one-use token, this is only called once
         oktaAuth.signInWithRedirect({ sessionToken });
       })
-      .catch((err) => console.log("Found an error", err));
+      .catch((err) => console.log("Error", err));
   };
 
   const handleUsernameChange = (e) => {
@@ -30,7 +30,7 @@ const SignInForm = () => {
   };
 
   if (sessionToken) {
-    // Hide form while sessionToken is converted into id/access tokens
+    // form is hidden while sessionToken is converted into id/access tokens
     return null;
   }
 
