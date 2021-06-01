@@ -1,7 +1,16 @@
 import React, { useState } from "react";
 import { useOktaAuth } from "@okta/okta-react";
+import { TextField, Button, makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: theme.spacing(10),
+  },
+}));
 
 const SignInForm = () => {
+  const classes = useStyles();
+
   const { oktaAuth } = useOktaAuth();
   const [sessionToken, setSessionToken] = useState();
   const [username, setUsername] = useState("");
@@ -35,26 +44,32 @@ const SignInForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className={classes.root} onSubmit={handleSubmit}>
       <label>
-        Username:
-        <input
+        <TextField
           id="username"
+          label="Username"
+          variant="outlined"
           type="text"
           value={username}
           onChange={handleUsernameChange}
+          autoComplete="username"
         />
       </label>
       <label>
-        Password:
-        <input
+        <TextField
           id="password"
+          label="Password"
+          variant="outlined"
           type="password"
           value={password}
           onChange={handlePasswordChange}
+          autoComplete="current-password"
         />
       </label>
-      <input id="submit" type="submit" value="Submit" />
+      <Button id="submit" type="submit" variant="contained" color="primary">
+        Submit
+      </Button>
     </form>
   );
 };
