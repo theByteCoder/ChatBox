@@ -2,9 +2,9 @@ import React from "react";
 import { Route, useHistory } from "react-router-dom";
 import { Security, SecureRoute, LoginCallback } from "@okta/okta-react";
 import { OktaAuth } from "@okta/okta-auth-js";
-import Home from "./Home";
+import Home from "../Common/Home";
+import Protected from "../Common/Protected";
 import SignIn from "./SignIn";
-import Protected from "./Protected";
 
 const AppWithRouterAccess = () => {
   const history = useHistory();
