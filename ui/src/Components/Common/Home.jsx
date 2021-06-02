@@ -40,7 +40,7 @@ const Home = () => {
     <div>
       <Link to="/">Home</Link>
       <br />
-      <Link to="/protected">Protected</Link>
+      <Link to="/about">About</Link>
       <br />
       {button}
     </div>

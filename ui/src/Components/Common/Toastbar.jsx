@@ -15,7 +15,13 @@ const Toastbar = ({ showSnack, text, variant }) => {
   return (
     <>
       {showSnack && (
-        <SnackbarProvider maxSnack={2}>
+        <SnackbarProvider
+          maxSnack={2}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+        >
           <Toast showSnack={showSnack} text={text} variant={variant} />
         </SnackbarProvider>
       )}
