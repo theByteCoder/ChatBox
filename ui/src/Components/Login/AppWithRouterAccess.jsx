@@ -3,7 +3,8 @@ import { Route, useHistory } from "react-router-dom";
 import { Security, SecureRoute, LoginCallback } from "@okta/okta-react";
 import { OktaAuth } from "@okta/okta-auth-js";
 import Home from "../Common/Home";
-import Protected from "../Common/Protected";
+import About from "../Common/About";
+import RegisterForm from "./RegisterForm";
 import SignIn from "./SignIn";
 
 const AppWithRouterAccess = () => {
@@ -23,8 +24,9 @@ const AppWithRouterAccess = () => {
   return (
     <Security oktaAuth={oktaAuth}>
       <Route path="/" exact={true} component={Home} />
-      <SecureRoute path="/protected" component={Protected} />
+      <SecureRoute path="/about" component={About} />
       <Route path="/login" render={() => <SignIn />} />
+      <Route path="/register" render={() => <RegisterForm />} />
       <Route path="/login/callback" component={LoginCallback} />
     </Security>
   );

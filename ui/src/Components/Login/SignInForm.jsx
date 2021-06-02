@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useOktaAuth } from "@okta/okta-react";
 import {
   makeStyles,
@@ -14,7 +15,7 @@ import {
 import { AccountCircle, Visibility, VisibilityOff } from "@material-ui/icons";
 import Toastbar from "../Common/Toastbar";
 import Spinner from "../Common/Spinner";
-import defaultImage from "../default.png";
+import LoginImage from "../Login.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,6 +49,15 @@ const useStyles = makeStyles((theme) => ({
     width: "90%",
     padding: 15,
   },
+  registerBtn: {
+    marginTop: 0,
+    display: "grid",
+    width: "90%",
+    padding: 15,
+  },
+  whiteText: {
+    color: "white !important",
+  },
   floatingLabelFocusStyle: {
     color: "black !important",
   },
@@ -64,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SignInForm = () => {
   const classes = useStyles();
+  const history = useHistory();
 
   const { oktaAuth } = useOktaAuth();
   const [sessionToken, setSessionToken] = useState();
@@ -122,8 +133,8 @@ const SignInForm = () => {
           <CardActionArea>
             <CardMedia
               className={classes.media}
-              image={defaultImage}
-              title="Contemplative Reptile"
+              image={LoginImage}
+              title="good-vibes"
             />
           </CardActionArea>
           <CardActions className={classes.userNameTxtbx}>
@@ -182,7 +193,21 @@ const SignInForm = () => {
               variant="contained"
               color="primary"
             >
-              Submit
+              Login
+            </Button>{" "}
+          </CardActions>{" "}
+          <CardActions className={classes.registerBtn}>
+            <Button
+              id="register"
+              type="button"
+              variant="text"
+              color="primary"
+              onClick={() => {
+                history.push("/register");
+              }}
+              className={classes.whiteText}
+            >
+              Register User
             </Button>
           </CardActions>
         </Card>
