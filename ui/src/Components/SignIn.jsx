@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { useOktaAuth } from "@okta/okta-react";
-import Spinner from "../Common/Spinner";
+import Spinner from "./Spinner";
 import SignInForm from "./SignInForm";
 
 const SignIn = () => {

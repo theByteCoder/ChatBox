@@ -11,9 +11,9 @@ import {
 import PersonIcon from "@material-ui/icons/Person";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import { AccountCircle } from "@material-ui/icons";
-import Toastbar from "../Common/Toastbar";
-import Spinner from "../Common/Spinner";
-import RegistrationImage from "../Registration.png";
+import Toastbar from "./Toastbar";
+import Spinner from "./Spinner";
+import RegistrationImage from "./Registration.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {

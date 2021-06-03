@@ -2,8 +2,8 @@ import React from "react";
 import { Route, useHistory } from "react-router-dom";
 import { Security, SecureRoute, LoginCallback } from "@okta/okta-react";
 import { OktaAuth } from "@okta/okta-auth-js";
-import Home from "../Common/Home";
-import About from "../Common/About";
+import Home from "./Home";
+import About from "./About";
 import RegisterForm from "./RegisterForm";
 import SignIn from "./SignIn";
 
