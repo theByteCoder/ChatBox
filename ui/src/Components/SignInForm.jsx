@@ -13,9 +13,9 @@ import {
   TextField,
 } from "@material-ui/core";
 import { AccountCircle, Visibility, VisibilityOff } from "@material-ui/icons";
-import Toastbar from "../Common/Toastbar";
-import Spinner from "../Common/Spinner";
-import LoginImage from "../Login.png";
+import Toastbar from "./Toastbar";
+import Spinner from "./Spinner";
+import LoginImage from "./Login.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {

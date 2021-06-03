@@ -4,15 +4,27 @@ import { useOktaAuth } from "@okta/okta-react";
 import Spinner from "./Spinner";
 
 const Home = () => {
-  const { authState, oktaAuth } = useOktaAuth();
   const history = useHistory();
+
+  const { authState, oktaAuth } = useOktaAuth();
+  const [userInfo, setUserInfo] = useState(null);
+
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!authState.isAuthenticated) {
+      setUserInfo(null);
       history.push("/login");
+    } else {
+      oktaAuth.getUser().then((info) => {
+        setUserInfo(info);
+      });
     }
-  }, [authState, history]);
+  }, [authState, history, oktaAuth]);
+
+  useEffect(() => {
+    console.log(userInfo);
+  }, [userInfo]);
 
   useEffect(() => {
     if (authState.isPending) {
