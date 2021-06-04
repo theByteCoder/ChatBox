@@ -2,18 +2,16 @@ import React, { useState } from "react";
 import {
   makeStyles,
   Button,
-  CardActionArea,
-  CardMedia,
   Card,
   CardActions,
   TextField,
 } from "@material-ui/core";
 import PersonIcon from "@material-ui/icons/Person";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
+import PhoneIcon from "@material-ui/icons/Phone";
 import { AccountCircle } from "@material-ui/icons";
 import Toastbar from "./Toastbar";
 import Spinner from "./Spinner";
-import RegistrationImage from "./Registration.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,6 +76,7 @@ const RegisterForm = () => {
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
+  const [mobilePhone, setMobilePhone] = useState("");
 
   const [isLoading, setLoading] = useState(false);
   const [registrationRequestSuccess, setRegistrationRequestSuccess] =
@@ -92,15 +91,18 @@ const RegisterForm = () => {
     setRegistrationRequestSuccess(false);
     setRegistrationRequestFailed(false);
     e.preventDefault();
+
     const payload = {
       firstName: firstname,
       lastName: lastname,
       email: email,
       login: username,
+      mobilePhone: mobilePhone,
     };
-    fetch("http://127.0.0.1:8000/registration/request", {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/registration/request/create`, {
       method: "POST",
       headers: {
+        Authorization: `SSWS ${process.env.REACT_APP_API_TOKEN}`,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -108,8 +110,9 @@ const RegisterForm = () => {
     })
       .then((res) => res.json())
       .then((response) => {
+        console.log(response);
         setLoading(false);
-        if (response.status === 201) {
+        if (response.status === 200) {
           setRegistrationRequestSuccess(true);
         } else {
           setRegistrationFailureReason(response.results);
@@ -134,17 +137,14 @@ const RegisterForm = () => {
     setLastname(e.target.value);
   };
 
+  const handleMobilePhoneChange = (e) => {
+    setMobilePhone(e.target.value);
+  };
+
   return (
     <>
       <form className={classes.root} onSubmit={handleSubmit}>
         <Card className={classes.cardBox}>
-          <CardActionArea>
-            <CardMedia
-              className={classes.media}
-              image={RegistrationImage}
-              title="hello-there"
-            />
-          </CardActionArea>
           <CardActions className={classes.firstNameTxtbx}>
             <TextField
               required
@@ -225,6 +225,26 @@ const RegisterForm = () => {
               }}
             />
           </CardActions>
+          <CardActions className={classes.userNameTxtbx}>
+            <TextField
+              required
+              id="mPhone"
+              label="Mobile phone"
+              variant="filled"
+              type="text"
+              value={mobilePhone}
+              onChange={handleMobilePhoneChange}
+              autoComplete="current-mPhone"
+              InputLabelProps={{
+                className: classes.floatingLabelFocusStyle,
+              }}
+              InputProps={{
+                endAdornment: (
+                  <PhoneIcon className={classes.accountCircleIcon} />
+                ),
+              }}
+            />
+          </CardActions>
           <CardActions className={classes.requestUserBtn}>
             <Button
               id="submit"
@@ -232,7 +252,7 @@ const RegisterForm = () => {
               variant="contained"
               color="primary"
             >
-              Request New User
+              Create User
             </Button>
           </CardActions>
         </Card>
