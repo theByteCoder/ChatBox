@@ -3,7 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Users
-from .okta import create_user, send_activation_mail
+from .okta import create_user
 
 
 # Create your views here.
@@ -29,22 +29,23 @@ def make_registration_request(request):
                 return JsonResponse({'results': 'Duplicate Mobile Phone Number', 'status': 409}, safe=False)
         except ObjectDoesNotExist:
             pass
-        create_user_response = create_user(body)
-        if create_user_response['status_code'] == 200:
-            uuid = create_user_response['uuid']
-            status = create_user_response['status']
-            created = create_user_response['created']
-            activation_link = create_user_response['activation_link']
-            send_activation_mail_status_code = send_activation_mail(activation_link)
-            if send_activation_mail_status_code == 200:
-                Users.objects.create(uuid=uuid, first_name=body['firstName'], last_name=body['lastName'],
-                                     email=body['email'], login=body['login'], mobile_phone=body['mobilePhone'],
-                                     status=status, created=created,
-                                     activation_link=activation_link)
-                return JsonResponse({'results': 'User Created', 'status': 200}, safe=False)
-            else:
-                return JsonResponse({'results': 'User Created. Contact Admin for activation mail ', 'status': 200},
-                                    safe=False)
+        response = create_user(body)
+        if response['status_code'] == 200:
+            uuid = response['uuid']
+            status = response['status']
+            last_login = response['last_login'] if response['last_login'] else "2000-01-01T00:00:01.000Z"
+            created = response['created']
+            activated = response['activated']
+            suspend = response['suspend']
+            reset_password = response['reset_password']
+            reactivate = response['reactivate']
+            deactivate = response['deactivate']
+            Users.objects.create(uuid=uuid, first_name=body['firstName'], last_name=body['lastName'],
+                                 email=body['email'], login=body['login'], mobile_phone=body['mobilePhone'],
+                                 status=status, last_login=last_login, created=created,
+                                 activated=activated, suspend=suspend, reset_password=reset_password,
+                                 reactivate=reactivate, deactivate=deactivate)
+            return JsonResponse({'results': 'User Created', 'status': 200}, safe=False)
         else:
             return JsonResponse({'results': 'Error Creating User', 'status': 500}, safe=False)
 
