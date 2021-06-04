@@ -10,7 +10,7 @@ load_dotenv()
 def create_user(payload):
     domain = os.environ.get("OKTA_DOMAIN")
     api_token = os.environ.get("OKTA_TOKEN")
-    url = f"https://{domain}/api/v1/users?activate=false"
+    url = f"https://{domain}/api/v1/users?activate=true"
     headers = {"Authorization": f"SSWS {api_token}", "Accept": "application/json",
                "Content-Type": "application/json", }
     data = {"profile": {
@@ -24,8 +24,13 @@ def create_user(payload):
     status_code = response.status_code
     response = response.json()
     return {'status_code': status_code, 'uuid': response['id'], 'status': response['status'],
+            'last_login': response['lastLogin'],
             'created': response['created'],
-            'activation_link': response['_links']['activate']['href']}
+            'activated': response['activated'],
+            'suspend': response['_links']['suspend']['href'],
+            'reset_password': response['_links']['resetPassword']['href'],
+            'reactivate': response['_links']['reactivate']['href'],
+            'deactivate': response['_links']['deactivate']['href']}
 
 
 def send_activation_mail(activation_url):
