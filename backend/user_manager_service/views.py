@@ -33,7 +33,7 @@ def make_registration_request(request):
         if response['status_code'] == 200:
             uuid = response['uuid']
             status = response['status']
-            last_login = response['last_login'] if response['last_login'] else "2000-01-01T00:00:01.000Z"
+            last_login = response['last_login']
             created = response['created']
             activated = response['activated']
             suspend = response['suspend']

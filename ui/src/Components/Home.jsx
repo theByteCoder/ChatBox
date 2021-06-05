@@ -23,10 +23,6 @@ const Home = () => {
   }, [authState, history, oktaAuth]);
 
   useEffect(() => {
-    console.log(userInfo);
-  }, [userInfo]);
-
-  useEffect(() => {
     if (authState.isPending) {
       setLoading(true);
     } else {
