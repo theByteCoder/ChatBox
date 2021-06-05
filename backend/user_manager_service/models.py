@@ -12,7 +12,7 @@ class Users(models.Model):
     login = models.TextField(max_length=100, default="")
     mobile_phone = models.TextField(max_length=20, default="")
     status = models.TextField(max_length=10, default="PROVISIONED")
-    last_login = models.TextField(max_length=30, default="2000-01-01T00:00:01.000Z")
+    last_login = models.TextField(max_length=30, null=True)
     created = models.TextField(max_length=30, default="2000-01-01T00:00:01.000Z")
     activated = models.TextField(max_length=30, default="2000-01-01T00:00:01.000Z")
     suspend = models.TextField(max_length=500, default="")

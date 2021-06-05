@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import {
   makeStyles,
   Button,
@@ -71,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
 
 const RegisterForm = () => {
   const classes = useStyles();
+  const history = useHistory();
 
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
@@ -110,7 +112,6 @@ const RegisterForm = () => {
     })
       .then((res) => res.json())
       .then((response) => {
-        console.log(response);
         setLoading(false);
         if (response.status === 200) {
           setRegistrationRequestSuccess(true);
@@ -140,6 +141,13 @@ const RegisterForm = () => {
   const handleMobilePhoneChange = (e) => {
     setMobilePhone(e.target.value);
   };
+
+  useEffect(() => {
+    registrationRequestSuccess &&
+      setTimeout(() => {
+        history.push("/login");
+      }, 3000);
+  }, [history, registrationRequestSuccess]);
 
   return (
     <>
