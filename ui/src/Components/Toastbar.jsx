@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { SnackbarProvider, useSnackbar } from "notistack";
+import { useSnackbar } from "notistack";
 
 const Toast = ({ showSnack, text, variant }) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -15,15 +15,7 @@ const Toastbar = ({ showSnack, text, variant }) => {
   return (
     <>
       {showSnack && (
-        <SnackbarProvider
-          maxSnack={2}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-        >
-          <Toast showSnack={showSnack} text={text} variant={variant} />
-        </SnackbarProvider>
+        <Toast showSnack={showSnack} text={text} variant={variant} />
       )}
     </>
   );

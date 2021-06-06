@@ -1,9 +1,11 @@
 import json
+import pprint
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Users
-from .okta import create_user
+from .okta import create_user, get_okta_user
 
 
 # Create your views here.
@@ -50,12 +52,33 @@ def make_registration_request(request):
             return JsonResponse({'results': 'Error Creating User', 'status': 500}, safe=False)
 
 
-def get_users(request):
-    results = list()
+def get_user(request, login):
     if request.method == "GET":
-        users = Users.objects.all()
-        for user in users:
-            results.append(
-                {'uuid': user.uuid, 'firstName': user.first_name, 'lastName': user.last_name, 'email': user.email,
-                 'userName': user.login, 'mobile_phone': user.mobilePhone})
-        return JsonResponse({'results': results, 'status': 200}, safe=False)
+        try:
+            Users.objects.get(login=login)
+            return JsonResponse({}, status=200)
+        except ObjectDoesNotExist:
+            status = sync_user_manager_db(login)
+            return JsonResponse({}, status=status)
+
+
+def sync_user_manager_db(login):
+    response = get_okta_user(login)
+    if response:
+        uuid = response['id']
+        first_name = response['profile']['firstName']
+        last_name = response['profile']['lastName']
+        mobile_phone = response['profile']['mobilePhone']
+        email = response['profile']['email']
+        status = response['status']
+        last_login = response['lastLogin']
+        created = response['created']
+        activated = response['activated']
+        suspend = response['_links']['suspend']['href']
+        deactivate = response['_links']['deactivate']['href']
+        Users.objects.create(uuid=uuid, first_name=first_name, last_name=last_name,
+                             email=email, login=login, mobile_phone=mobile_phone,
+                             status=status, last_login=last_login, created=created,
+                             activated=activated, suspend=suspend, deactivate=deactivate)
+        return 201
+    return 404
