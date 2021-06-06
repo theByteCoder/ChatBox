@@ -57,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
   },
   whiteText: {
     color: "white !important",
+    textDecoration: "underline",
   },
   floatingLabelFocusStyle: {
     color: "black !important",
@@ -66,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: -10,
   },
   visibilityIcon: {
-    width: 35,
+    width: 60,
     marginRight: -10,
     marginLeft: -8,
   },
@@ -80,13 +81,24 @@ const SignInForm = () => {
   const [sessionToken, setSessionToken] = useState();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const [isUserRegistered, setUserRegistered] = useState(false);
+  const [isUserNotRegistered, setUserNotRegistered] = useState(false);
+  const [isUserNotRegisteredLoginFailed, setUserNotRegisteredLoginFailed] =
+    useState(false);
+  const [isInvalidPasswordLoginFailed, setInvalidPasswordLoginFailed] =
+    useState(false);
   const [isLoading, setLoading] = useState(false);
-  const [loginFailed, setLoginFailed] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (e) => {
+    setUserRegistered(false);
+    setUserNotRegistered(false);
+    setUserNotRegisteredLoginFailed(false);
+    setInvalidPasswordLoginFailed(false);
     setLoading(true);
     e.preventDefault();
+    const apiBaseUri = process.env.REACT_APP_API_BASE_URL;
     oktaAuth
       .signInWithCredentials({ username, password })
       .then((res) => {
@@ -94,31 +106,64 @@ const SignInForm = () => {
         setSessionToken(sessionToken);
         // sessionToken is a one-use token, this is only called once
         oktaAuth.signInWithRedirect({ sessionToken });
-        setLoginFailed(false);
         setLoading(false);
       })
       .catch((err) => {
-        setLoginFailed(true);
-        setLoading(false);
+        fetch(`${apiBaseUri}/users/get/${username}`).then((res) => {
+          res.status === 404 && setUserNotRegisteredLoginFailed(true);
+          (res.status === 200 || res.status === 201) &&
+            setInvalidPasswordLoginFailed(true);
+          setLoading(false);
+        });
       });
   };
 
   const handleUsernameChange = (e) => {
-    setLoginFailed(false);
+    setUserRegistered(false);
+    setUserNotRegistered(false);
+    setUserNotRegisteredLoginFailed(false);
+    setInvalidPasswordLoginFailed(false);
     setUsername(e.target.value);
   };
 
   const handlePasswordChange = (e) => {
-    setLoginFailed(false);
+    setUserRegistered(false);
+    setUserNotRegistered(false);
+    setUserNotRegisteredLoginFailed(false);
+    setInvalidPasswordLoginFailed(false);
     setPassword(e.target.value);
   };
 
   const handleClickShowPassword = () => {
+    setUserRegistered(false);
+    setUserNotRegistered(false);
+    setUserNotRegisteredLoginFailed(false);
+    setInvalidPasswordLoginFailed(false);
     setShowPassword(!showPassword);
   };
 
   const handleMouseDownPassword = (event) => {
+    setUserRegistered(false);
+    setUserNotRegistered(false);
+    setUserNotRegisteredLoginFailed(false);
+    setInvalidPasswordLoginFailed(false);
     event.preventDefault();
+  };
+
+  const handleCheckUser = () => {
+    setUserRegistered(false);
+    setUserNotRegistered(false);
+    setUserNotRegisteredLoginFailed(false);
+    setInvalidPasswordLoginFailed(false);
+    setLoading(true);
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/users/get/${username}`).then(
+      (res) => {
+        setLoading(false);
+        res.status === 200 && setUserRegistered(true);
+        res.status === 201 && setUserRegistered(true);
+        res.status === 404 && setUserNotRegistered(true);
+      }
+    );
   };
 
   if (sessionToken) {
@@ -152,7 +197,9 @@ const SignInForm = () => {
               }}
               InputProps={{
                 endAdornment: (
-                  <AccountCircle className={classes.accountCircleIcon} />
+                  <IconButton onClick={handleCheckUser}>
+                    <AccountCircle className={classes.accountCircleIcon} />
+                  </IconButton>
                 ),
               }}
             />
@@ -194,8 +241,8 @@ const SignInForm = () => {
               color="primary"
             >
               Login
-            </Button>{" "}
-          </CardActions>{" "}
+            </Button>
+          </CardActions>
           <CardActions className={classes.registerBtn}>
             <Button
               id="register"
@@ -213,7 +260,26 @@ const SignInForm = () => {
         </Card>
       </form>
       <Spinner showSpinner={isLoading} />
-      <Toastbar showSnack={loginFailed} text="Login Failed" variant="error" />
+      <Toastbar
+        showSnack={isUserRegistered}
+        text="User is registered."
+        variant="success"
+      />
+      <Toastbar
+        showSnack={isUserNotRegistered}
+        text={"User is not registered."}
+        variant="error"
+      />
+      <Toastbar
+        showSnack={isUserNotRegisteredLoginFailed}
+        text={"Login failed. User is not registered."}
+        variant="error"
+      />
+      <Toastbar
+        showSnack={isInvalidPasswordLoginFailed}
+        text="Login failed. Invalid password."
+        variant="error"
+      />
     </>
   );
 };

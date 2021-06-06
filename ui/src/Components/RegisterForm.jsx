@@ -68,6 +68,11 @@ const useStyles = makeStyles((theme) => ({
     marginRight: -10,
     marginLeft: -8,
   },
+  backToLogin: {
+    margin: 10,
+    color: "white !important",
+    textDecoration: "underline",
+  },
 }));
 
 const RegisterForm = () => {
@@ -142,6 +147,10 @@ const RegisterForm = () => {
     setMobilePhone(e.target.value);
   };
 
+  const handleBackToLogin = () => {
+    history.push("/login");
+  };
+
   useEffect(() => {
     registrationRequestSuccess &&
       setTimeout(() => {
@@ -153,6 +162,15 @@ const RegisterForm = () => {
     <>
       <form className={classes.root} onSubmit={handleSubmit}>
         <Card className={classes.cardBox}>
+          <Button
+            className={classes.backToLogin}
+            id="back-to-login"
+            variant="text"
+            color="primary"
+            onClick={handleBackToLogin}
+          >
+            GOTO Login
+          </Button>
           <CardActions className={classes.firstNameTxtbx}>
             <TextField
               required

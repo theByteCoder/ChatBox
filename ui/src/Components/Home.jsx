@@ -7,17 +7,20 @@ const Home = () => {
   const history = useHistory();
 
   const { authState, oktaAuth } = useOktaAuth();
-  const [userInfo, setUserInfo] = useState(null);
 
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!authState.isAuthenticated) {
-      setUserInfo(null);
       history.push("/login");
     } else {
       oktaAuth.getUser().then((info) => {
-        setUserInfo(info);
+        const apiBaseUri = process.env.REACT_APP_API_BASE_URL;
+        fetch(`${apiBaseUri}/users/get/${info.preferred_username}`).then(
+          (res) => {
+            res.json();
+          }
+        );
       });
     }
   }, [authState, history, oktaAuth]);

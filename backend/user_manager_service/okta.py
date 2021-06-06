@@ -33,10 +33,14 @@ def create_user(payload):
             'deactivate': response['_links']['deactivate']['href']}
 
 
-def send_activation_mail(activation_url):
-    url = f"{activation_url}?sendEmail=true"
+def get_okta_user(login):
+    domain = os.environ.get("OKTA_DOMAIN")
     api_token = os.environ.get("OKTA_TOKEN")
+    url = f"https://{domain}/api/v1/users/{login}"
     headers = {"Authorization": f"SSWS {api_token}", "Accept": "application/json",
                "Content-Type": "application/json", }
-    response = requests.post(url, headers=headers)
-    return response.status_code
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return {}
