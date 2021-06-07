@@ -1,11 +1,11 @@
 'use strict';
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
 dotenv.config();
 
-const mongoose = require('mongoose');
 const dbConnectionString = `mongodb://${process.env.DOMAIN}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}`
 
 mongoose.connect(dbConnectionString, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
