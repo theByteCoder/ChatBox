@@ -74,7 +74,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'messapp',
+        'NAME': 'chatbox',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'PORT': '5432',
