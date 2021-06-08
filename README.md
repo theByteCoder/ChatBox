@@ -4,14 +4,17 @@
 ## Steps to setup backend -
 
 1. Install postgres
-2. Add database messapp
-3. Make sure python 3.7 or above is installed
-4. On terminal/ cmd, navigate to ../backend directory
-5. Start a virtual environment
-6. Install python requirement from requirements.txt file pip install -r requirements.txt
-7. Run commands python manage.py makemigrations and python python manage.py migrate.
-8. Finally, run python manage.py runserver. Django should be started on localhost
-
+2. Add database chatbox
+3. Install mongodb
+4. Add database chatbox, and add 3 collections - messages, connections, notifier
+5. Make sure python 3.7 or above is installed
+6. On terminal/ cmd, navigate to ../backend directory
+7. Start a virtual environment
+8. Install python requirement from requirements.txt file pip install -r requirements.txt
+9. Run commands python manage.py makemigrations and python python manage.py migrate.
+10. Run python manage.py runserver. Django should be started on localhost. This will bring up user management service.
+11. Navigate to /chat_service/chat_service, and run command yarn install
+12. Run command yarn start. Express should be started on localhost. This will bring up chat service.
 
 ## Steps to setup frontend -
 
