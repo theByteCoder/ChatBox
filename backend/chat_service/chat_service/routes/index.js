@@ -24,7 +24,7 @@ router.get('/messages', (req, res) => {
 router.post('/messages', (req, res) => {
     const message = new collectionMessages(req.body);
     message.save((err) => {
-        err && sendStatus(500);
+        err && res.sendStatus(500);
         res.sendStatus(200);
     })
 })
