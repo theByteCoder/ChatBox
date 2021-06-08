@@ -1,6 +1,16 @@
 # ChatBox
 
 
+## Steps to setup frontend -
+
+1. Install node.js
+2. We are using nvm > 12, make sure nvm is set to 12
+3. Install yarn
+4. Navigate to ../ui directory
+5. Run command yarn install
+6. Run command yarn start
+
+
 ## Steps to setup backend -
 
 1. Install postgres
@@ -15,12 +25,3 @@
 10. Run python manage.py runserver. Django should be started on localhost. This will bring up user management service.
 11. Navigate to /chat_service/chat_service, and run command yarn install
 12. Run command yarn start. Express should be started on localhost. This will bring up chat service.
-
-## Steps to setup frontend -
-
-1. Install node.js
-2. We are using nvm > 12, make sure nvm is set to 12
-3. Install yarn
-4. Navigate to ../ui directory
-5. Run command yarn install
-6. Run command yarn start
