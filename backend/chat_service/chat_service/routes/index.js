@@ -3,8 +3,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const cryptographer = require('../cryptographer');
-const { log } = require('debug');
+const cryptographer = require('../middlewire/cryptographer');
 
 dotenv.config();
 
@@ -22,7 +21,7 @@ const collectionMessages = mongoose.model('messages', { name: String, message: O
 router.get('/messages/:name', (req, res) => {
     collectionMessages.find({ name: req.params.name }, (err, messages) => {
         let decryptOut = cryptographer.decrypt(messages[0].message.buffer, messages[0].key.buffer);
-        const payload = { name: req.params.name, message: decryptOut.toString('utf8')}
+        const payload = { name: req.params.name, message: decryptOut.toString('utf8') }
         res.send(payload);
     })
 })
