@@ -3,8 +3,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const cryptographer = require('../cryptographer');
-const { log } = require('debug');
+const cryptographer = require('../middlewire/cryptographer');
 
 dotenv.config();
 

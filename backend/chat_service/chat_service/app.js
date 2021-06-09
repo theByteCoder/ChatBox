@@ -8,14 +8,10 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const routes = require('./routes/index');
 const users = require('./routes/users');
+const devLogger = require('./middlewire/logger')
 
 const app = express();
 dotenv.config();
-
-const devLogger = (req, res, next) => {
-    process.env.ENV === 'dev' && console.log(`\n${req.protocol}://${req.get('host')}${req.originalUrl}`)
-    next()
-}
 
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
