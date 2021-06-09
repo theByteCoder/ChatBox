@@ -27,7 +27,6 @@ router.get('/messages/:name', (req, res) => {
 })
 
 router.post('/messages', (req, res) => {
-    console.log(cryptographer.encrypt(req.body.message, key))
     const payload = { ...req.body, message: cryptographer.encrypt(req.body.message, key), key: key }
     const message = new collectionMessages(payload);
     message.save((err) => {
