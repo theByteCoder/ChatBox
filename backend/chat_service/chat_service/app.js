@@ -12,6 +12,11 @@ const users = require('./routes/users');
 const app = express();
 dotenv.config();
 
+const devLogger = (req, res, next) => {
+    process.env.ENV === 'dev' && console.log(`\n${req.protocol}://${req.get('host')}${req.originalUrl}`)
+    next()
+}
+
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
@@ -19,11 +24,11 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 app.use(logger('dev'));
+app.use(devLogger);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', routes);
 app.use('/users', users);
 
